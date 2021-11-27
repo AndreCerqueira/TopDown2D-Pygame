@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
         self.status = 'walk-front'
         self.image = self.animations[self.status][self.frame_index]
         self.rect = self.image.get_rect(topleft = pos)
-
+        
         # Player Transform
         self.width = 100
         self.height = 100
@@ -41,7 +41,6 @@ class Player(pygame.sprite.Sprite):
             self.frame_index = 0
 
         image = animation[int(self.frame_index)]
-        self.facing_right = True          # <-- arranjar aqui
 
         flip = False
         if self.direction.x < 0:
