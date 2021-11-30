@@ -9,8 +9,6 @@ pygame.display.set_caption("Game!")
 clock = pygame.time.Clock()
 level = Level(level_map, WIN)
 
-# PLAYER = pygame.transform.rotate(pygame.transform.scale(PLAYER_IMAGE, (PLAYER_WIDTH, PLAYER_HEIGHT)), 0)
-
 def main():
 
     # Setup 
@@ -22,14 +20,10 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
 
-        WIN.fill('black')
-
         level.run()
-        
+
         clock.tick(FPS)
-        pygame.display.update()
-        
-        
+        pygame.display.update()        
 
 
 if __name__ == "__main__":

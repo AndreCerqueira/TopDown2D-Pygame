@@ -19,7 +19,7 @@ class Player(pygame.sprite.Sprite):
         self.height = 100
 
         # Player Movement
-        self.speed = 4
+        self.speed = 8
         self.direction = pygame.math.Vector2(0,0)
 
 

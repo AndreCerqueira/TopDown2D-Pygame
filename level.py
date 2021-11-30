@@ -1,37 +1,51 @@
 import pygame
-from settings import tile_size
+from settings import WIDTH, tile_size
 from tiles import Tile
 from player import Player
+from pytmx.util_pygame import load_pygame
 
 class Level():
     def __init__(self, level_data, surface):
         super().__init__()
         
         # Level Setup
+        self.tmxdata = load_pygame("levels/level_data/level_0.tmx")
         self.display_surface = surface 
-        self.setup_level(level_data)
-
-    
-    def setup_level(self, layout):
-        self.tiles = pygame.sprite.Group()
         self.player = Player((100, 300))
 
-        for row_index, row in enumerate(layout):
-            for cell_index, cell in enumerate(row):
-                x = cell_index * tile_size
-                y = row_index * tile_size
+    
+    def setup_level(self):
+        for layer in self.tmxdata:
+            for tile in layer.tiles():
+                x_pixel = tile[0] * 64
+                y_pixel = tile[1] * 64
+                self.display_surface.blit(tile[2], (x_pixel, y_pixel))
 
-                if (cell == ' '):
-                    tile = Tile((x,y),tile_size)
-                    self.tiles.add(tile)
+    def draw_level(self):
+        pass
+
+    def scroll_map(self):
+        player_x = self.player.rect.centerx
+        direction_x = self.player.direction.x
+
+        if player_x < WIDTH / 4 and direction_x < 0:
+            self.world_shift = 8
+            self.player.speed = 0
+        elif player_x > WIDTH - (WIDTH / 4) and direction_x > 0:
+            self.world_shift = -8
+            self.player.speed = 0
+        else:
+            self.world_shift = 0
+            self.player.speed = 8
+
 
     def run(self):
-        self.tiles.draw(self.display_surface)
 
         self.player.update()
-        
-        self.display_surface.blit(self.player.image, (self.player.rect.x, self.player.rect.y))
 
-        #for tile in self.tiles:
-         #   self.display_surface.blit(tile.image, (tile.rect.x, tile.rect.y))
-    
+        self.scroll_map()
+        
+        self.setup_level()
+        self.display_surface.blit(self.player.image, self.player.rect)
+
+
